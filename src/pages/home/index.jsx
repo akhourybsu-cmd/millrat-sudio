@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { usePageMeta } from '../../hooks/usePageMeta'
 import { CTAButton, KickstarterCTA } from '../../components/millrat-pack/CTAButton'
+import { HomeMailingList } from '../../components/home/HomeMailingList'
 import { games } from '../../data/games'
 import { assets } from '../../data/assets'
 
@@ -245,6 +246,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Mailing List ──────────────────────────────────────────────────── */}
+      <HomeMailingList />
 
       {/* ── Bottom CTA ────────────────────────────────────────────────────── */}
       <section className="bg-ink py-16 px-4 text-center" aria-label="Campaign call to action">
