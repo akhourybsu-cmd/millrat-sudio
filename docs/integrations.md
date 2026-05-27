@@ -33,37 +33,27 @@ export const campaignConfig = {
 
 ---
 
-## 2. Email capture
+## 2. Email capture ✓ DONE
 
 **File:** `src/components/millrat-pack/EmailCapture.jsx`
 
-**Function to replace:** `submitEmail(email)` (lines 6–13)
+Wired to Mailchimp via native form POST — no Mailchimp JS/CSS loaded.
 
-Currently a stub that simulates a 800ms delay. Replace with one of:
+The form uses `action`, `method="post"`, `target="_blank"` to submit directly to Mailchimp's servers, opening the confirmation page in a new tab. A honeypot bot field is included off-screen.
 
-### Option A — Mailchimp
+Config values live in `src/data/campaign.js`:
 ```js
-async function submitEmail(email) {
-  const res = await fetch(campaignConfig.emailSignupUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email_address: email, status: 'subscribed' }),
-  })
-  if (!res.ok) throw new Error('Signup failed — please try again.')
-}
+mailchimpActionUrl:     'https://mailchi.us10.list-manage.com/subscribe/post?...'
+mailchimpEmailFieldName: 'EMAIL'
+mailchimpBotFieldName:  'b_...'
+emailSignupUrl:         'https://mailchi.mp/millrat.com/millratpacklanding' // fallback
 ```
 
-### Option B — Supabase
-```js
-import { supabase } from '../lib/supabase'
-async function submitEmail(email) {
-  const { error } = await supabase.from('signups').insert({ email })
-  if (error) throw new Error('Signup failed — please try again.')
-}
-```
-
-### Option C — Formspree / Netlify Forms
-Replace the `<form>` element's `onSubmit` with a native POST action.
+**Security constraints (do not revert):**
+- No Mailchimp CSS file imported
+- No `mc-validate.js` script tag
+- No API key in frontend code
+- Only the public embed action URL and field names are stored
 
 ---
 
