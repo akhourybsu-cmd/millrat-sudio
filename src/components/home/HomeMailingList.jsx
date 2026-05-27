@@ -1,28 +1,19 @@
-import { useState } from 'react'
 import { campaignConfig } from '../../data/campaign'
 
-// ── Mailing list section for the homepage ────────────────────────────────────
-// Same Mailchimp native form POST as EmailCapture — different copy and context.
+// ── HomeMailingList ───────────────────────────────────────────────────────────
+// Pure native Mailchimp form POST — no fetch, no fake success state.
+// Submits directly to Mailchimp's servers; a confirmation page opens in a new
+// tab. No Mailchimp CSS or JS scripts are loaded.
+//
+// If mailchimpActionUrl is missing, falls back to a direct link.
 
 export function HomeMailingList() {
-  const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle') // idle | error | submitted
-  const [errorMsg, setErrorMsg] = useState('')
-
-  const formAction =
-    campaignConfig.mailchimpActionUrl || campaignConfig.emailSignupUrl || '#'
-
-  const handleSubmit = (e) => {
-    if (!email || !email.includes('@')) {
-      e.preventDefault()
-      setErrorMsg('Enter a valid email address.')
-      setStatus('error')
-      return
-    }
-    setStatus('submitted')
-    setErrorMsg('')
-    // TODO: analytics.track('home_email_signup', { context: 'home_mailing_list' })
-  }
+  const {
+    mailchimpActionUrl,
+    mailchimpEmailFieldName,
+    mailchimpBotFieldName,
+    emailSignupUrl,
+  } = campaignConfig
 
   return (
     <section className="bg-ink py-20 px-4" aria-labelledby="mailing-list-heading">
@@ -47,31 +38,21 @@ export function HomeMailingList() {
           No noise — unsubscribe any time.
         </p>
 
-        {status === 'submitted' ? (
-          <div className="animate-pop-in bg-green-sticker/10 border-2 border-green-sticker rounded-2xl px-8 py-10 max-w-md mx-auto">
-            <div className="text-4xl mb-3" aria-hidden="true">🎉</div>
-            <p className="font-display text-paper text-xl mb-1">Almost there!</p>
-            <p className="font-body text-paper/60 text-sm">
-              Check the new tab to confirm — then you're on the list.
-            </p>
-          </div>
-        ) : (
+        {mailchimpActionUrl ? (
           <form
-            action={formAction}
+            action={mailchimpActionUrl}
             method="post"
             target="_blank"
             noValidate
-            onSubmit={handleSubmit}
             className="max-w-md mx-auto"
           >
-            {/* Mailchimp honeypot — off-screen, do not remove */}
+            {/* Mailchimp anti-bot honeypot — must stay off-screen */}
             <div aria-hidden="true" className="absolute -left-[5000px]">
               <input
                 type="text"
-                name={campaignConfig.mailchimpBotFieldName}
+                name={mailchimpBotFieldName}
                 tabIndex={-1}
                 defaultValue=""
-                readOnly
               />
             </div>
 
@@ -82,20 +63,11 @@ export function HomeMailingList() {
               <input
                 id="home-email-capture"
                 type="email"
-                name={campaignConfig.mailchimpEmailFieldName}
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value)
-                  if (status === 'error') setStatus('idle')
-                }}
+                name={mailchimpEmailFieldName}
                 placeholder="your@email.com"
                 required
                 autoComplete="email"
-                className={`flex-1 font-body text-ink bg-paper rounded-lg px-4 py-3 border-2 outline-none transition-all placeholder:text-ink/30 ${
-                  status === 'error'
-                    ? 'border-red-400'
-                    : 'border-transparent focus:border-purple-mill'
-                }`}
+                className="flex-1 font-body text-ink bg-paper rounded-lg px-4 py-3 border-2 border-transparent outline-none transition-all placeholder:text-ink/30 focus:border-purple-mill"
               />
               <button
                 type="submit"
@@ -105,16 +77,20 @@ export function HomeMailingList() {
               </button>
             </div>
 
-            {status === 'error' && errorMsg && (
-              <p role="alert" className="font-body text-red-400 text-sm mt-2 text-left">
-                {errorMsg}
-              </p>
-            )}
-
-            <p className="font-body text-paper/25 text-xs mt-3">
-              No spam. Just game night stuff.
+            <p className="font-body text-paper/30 text-xs mt-3">
+              After submitting, Mailchimp may open a confirmation page in a new tab.
             </p>
           </form>
+        ) : (
+          /* Fallback: direct link to Mailchimp landing page */
+          <a
+            href={emailSignupUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block font-display text-ink bg-green-sticker hover:bg-green-sticker-dark px-8 py-3 rounded-lg shadow-sticker hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-150"
+          >
+            Count me in →
+          </a>
         )}
       </div>
     </section>
