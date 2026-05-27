@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Chelsea Market';
+  src: url('/fonts/ChelseaMarket-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   *, *::before, *::after {
     box-sizing: border-box;

@@ -19,7 +19,7 @@ export default {
         'orange-muted': '#F28C38',
       },
       fontFamily: {
-        display: ['"Chelsea Market"', 'system-ui', 'sans-serif'],
+        display: ["'Chelsea Market'", 'system-ui', 'sans-serif'],
         body: ['"Nunito"', 'system-ui', 'sans-serif'],
       },
       boxShadow: {
