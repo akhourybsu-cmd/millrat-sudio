@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: #17121F;
+    color: #F5EFE6;
+    font-family: 'Nunito', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Global focus-visible ring — applies to all interactive elements */
+  :focus-visible {
+    outline: 3px solid #00C978;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Suppress focus ring for mouse users but keep for keyboard */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Fredoka One', system-ui, sans-serif;
+  }
+
+  .text-shadow-ink {
+    text-shadow: 2px 2px 0px rgba(23, 18, 31, 0.4);
+  }
+
+  /* Torn paper edge — overflowing bottom of a dark section */
+  .torn-bottom {
+    position: relative;
+    padding-bottom: 24px;
+  }
+  .torn-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+    width: 100%;
+    height: 22px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 22' preserveAspectRatio='none'%3E%3Cpath d='M0 0 Q60 22 120 8 Q180 0 240 14 Q300 22 360 6 Q420 0 480 16 Q540 22 600 4 Q660 0 720 18 Q780 22 840 8 Q900 0 960 14 Q1020 22 1080 6 Q1140 0 1200 16 Q1260 22 1320 8 Q1380 0 1440 14 L1440 22 L0 22Z' fill='%23F5EFE6'/%3E%3C/svg%3E");
+    background-size: cover;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .card-cutout {
+    border-radius: 4px 12px 6px 10px / 8px 6px 12px 4px;
+  }
+
+  .sticker {
+    border-radius: 50% 48% 52% 50% / 50% 52% 48% 50%;
+  }
+
+  /* Consistent section divider spacing */
+  .section-gap {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+}
