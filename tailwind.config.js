@@ -20,7 +20,7 @@ export default {
       },
       fontFamily: {
         display: ["'Chelsea Market'", 'system-ui', 'sans-serif'],
-        body: ['"Nunito"', 'system-ui', 'sans-serif'],
+        body: ["'Asap'", 'system-ui', 'sans-serif'],
       },
       boxShadow: {
         paper: '4px 4px 0px rgba(23,18,31,0.25)',
